@@ -16,6 +16,7 @@
   limitations under the License.
   -->
 
+<!--  xsi / dubbo 之类的都是命名空间 -->
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
        xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
@@ -23,16 +24,22 @@
        http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <context:property-placeholder/>
 
+    <!-- dubbo 微服务中的应用 可能是消费端 也可能是服务端 -->
     <dubbo:application name="demo-provider"/>
 
+    <!-- 客户端 与 注册中心交互的标签定义信息 -->
     <dubbo:registry address="zookeeper://${zookeeper.address:127.0.0.1}:2181"/>
 
+    <!-- RPC通信协议 标签定义信息 -->
     <dubbo:protocol name="dubbo" port="20880"/>
 
+    <!-- 真正的服务实现类 -->
     <bean id="target" class="org.apache.dubbo.samples.local.impl.DemoServiceImpl"/>
 
+    <!-- 暴露的服务接口 -->
     <dubbo:service interface="org.apache.dubbo.samples.local.api.DemoService" ref="target"/>
 
+    <!-- 客户端 需要 引用的 分布式环境中的微服务 接口 -->
     <dubbo:reference id="demoService" interface="org.apache.dubbo.samples.local.api.DemoService"/>
 
 </beans>
